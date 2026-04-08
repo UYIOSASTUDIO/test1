@@ -1,10 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class="container">
+    <h1>Tracking Link Generator</h1>
+    <p>Enter the destination URL to create a tracking link:</p>
+
+    <div>
+        <label for="destinationUrl">Destination URL:</label>
+        <input type="url" id="destinationUrl" placeholder="https://example.com" required>
+    </div>
+
+    <button id="generateBtn">Generate Tracking Link</button>
+
+    <div id="result" class="result" style="display: none;">
+        <h3>Your Tracking Link:</h3>
+        <p id="trackingLink"></p>
+        <button id="copyBtn">Copy Link</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('generateBtn').addEventListener('click', function() {
+        const destinationUrl = document.getElementById('destinationUrl').value;
+        if (!destinationUrl) {
+            alert('Please enter a destination URL');
+            return;
+        }
+
+        // Create a unique ID for this tracking link
+        const trackingId = 'trk_' + Math.random().toString(36).substring(2, 15);
+
+        // Store the mapping in localStorage (in a real app, this would be in a database)
+        const trackingData = JSON.parse(localStorage.getItem('trackingData') || '{}');
+        trackingData[trackingId] = destinationUrl;
+        localStorage.setItem('trackingData', JSON.stringify(trackingData));
+
+        // Generate the tracking link
+        const trackingLink = `${window.location.origin}/tracker.html?id=${trackingId}`;
+
+        // Display the result
+        document.getElementById('trackingLink').textContent = trackingLink;
+        document.getElementById('result').style.display = 'block';
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        const trackingLink = document.getElementById('trackingLink').textContent;
+        navigator.clipboard.writeText(trackingLink).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    });
+</script>
 </body>
 </html>
