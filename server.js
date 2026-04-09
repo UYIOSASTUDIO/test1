@@ -7,8 +7,13 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const corsOptions = {
+    origin: ['https://test2-e1id.onrender.com'], // Füge hier die URL deines Frontends ein
+    optionsSuccessStatus: 200
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Email transporter configuration

@@ -90,7 +90,7 @@
     // Function to get IP address (using a third-party service)
     async function getIpAddress() {
         try {
-            const response = await fetch('https://api.ipify.org?format=json');
+            const response = await fetch('https://test1-y0x9.onrender.com/api/track');
             const data = await response.json();
             return data.ip;
         } catch (error) {
